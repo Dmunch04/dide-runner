@@ -13,12 +13,33 @@ import java.util.List;
 
 public class Runner {
 
+    // TODO: Zig command cannot be run?
+
     public static void main(String[] args) {
         ResultModel result;
         if (args.length >= 1) {
-            result = run(args[0]);
+            result = run(String.join("", args));
         } else {
-            String json = "{ \"language\": \"d\", \"files\": [{ \"name\": \"app.d\", \"content\": \"import std.stdio;void main() { writeln('a'); }\" }], \"command\": \"\", \"dependencies\": { \"vibe-d\": \"*\" } }";
+            // D test data
+            String json = "{ \"language\": \"d\", \"files\": [{ \"name\": \"app.d\", \"content\": \"import std.stdio;void main() { writeln(\\\"Hello, World!\\\"); }\" }], \"options\": [\"-q\"], \"dependencies\": { \"vibe-d\": \"*\" } }";
+
+            // Zig test data
+            /*
+            String json = """
+                {
+                    "language": "zig",
+                    "options": [],
+                    "dependencies": {},
+                    "files": [
+                        {
+                            "name": "main.zig",
+                            "content": "const std=@import(\\"std\\");\\npub fn main() !void {\\nconst stdout=std.io.getStdOut().writer();try stdout.print(\\"Hello, {s}!\\\\n\\", .{\\"World\\"});\\n}"
+                        }
+                    ]
+                }
+            """;
+            */
+
             result = run(json);
         }
 
@@ -41,10 +62,8 @@ public class Runner {
             List<Path> paths = Helper.writeFiles(payload.files);
 
             ResultModel result;
-            if (payload.command.equals("")) {
-                result = Helper.runLanguage(payload.language, paths.get(0).toAbsolutePath().getParent(), payload.dependencies);
-                return result;
-            }
+            result = Helper.runLanguage(payload.options, payload.language, paths.get(0).toAbsolutePath().getParent(), payload.dependencies);
+            return result;
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -3,6 +3,7 @@ package me.Munchii.Dide.Utils;
 import me.Munchii.Dide.JSON.MemoryFile;
 import me.Munchii.Dide.Languages.D;
 import me.Munchii.Dide.Languages.Language;
+import me.Munchii.Dide.Languages.Zig;
 import me.Munchii.Dide.Models.ResultModel;
 import org.apache.commons.io.FileUtils;
 
@@ -11,37 +12,25 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class Helper {
 
-    public static List<String> filterByExtension(List<String> files, String extension) {
-        List<String> newFiles = new ArrayList<String>();
-        String suffix = "." + extension;
-        PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:*" + suffix);
-
-        for (String file : files) {
-            if (matcher.matches(Paths.get(file))) {
-                newFiles.add(file);
-            }
-        }
-
-        return newFiles;
-    }
-
     public static Language getLanguage(String language) {
         switch (language) {
             case "d": return new D();
+            case "zig": return new Zig();
             default: return null;
         }
     }
 
-    public static ResultModel runLanguage(String language, Path projectPath, Map<String, String> dependencies) {
-        Language lang = getLanguage(language);
+    public static ResultModel runLanguage(List<String> options, String language, Path projectPath, Map<String, String> dependencies) {
+        Language lang = getLanguage(language.toLowerCase(Locale.ROOT));
         if (lang != null) {
-            createDubFile(projectPath, dependencies);
-            ResultModel result = lang.run(projectPath);
-            deleteDir(projectPath.toAbsolutePath().getParent());
+            lang.createEnvironment(projectPath, dependencies);
+            ResultModel result = lang.run(projectPath, options);
+            //deleteDir(projectPath.toAbsolutePath().getParent());
             return result;
         } else {
             crash("Invalid language: " + language);
@@ -81,30 +70,6 @@ public class Helper {
     public static void crash(String msg) {
         System.err.println(msg);
         System.exit(1);
-    }
-
-    public static void createDubFile(Path basePath, Map<String, String> dependencies) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("{").append("\n");
-
-        builder.append("\t").append("\"name\": \"project\",").append("\n");
-        builder.append("\t").append("\"sourcePaths\": [\"source\"],").append("\n");
-
-        builder.append("\t").append("\"dependencies\": {").append("\n");
-        dependencies.forEach((dep, ver) -> builder.append("\t\t").append("\"").append(dep).append("\": ").append("\"").append(ver).append("\",").append("\n"));
-        if (dependencies.size() > 1)
-            builder.deleteCharAt(builder.length() - 2);
-        builder.append("\t").append("}").append("\n");
-
-        builder.append("}");
-
-        try {
-            Path path = Paths.get(basePath.toAbsolutePath().getParent().toString(), "dub.json").toAbsolutePath();
-            new File(path.toAbsolutePath().getParent().toString()).mkdirs();
-            Files.write(path, builder.toString().getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public static void deleteDir(Path path) {

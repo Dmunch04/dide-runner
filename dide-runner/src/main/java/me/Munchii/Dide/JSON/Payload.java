@@ -7,7 +7,7 @@ public class Payload {
 
     public String language;
     public List<MemoryFile> files;
-    public String command;
+    public List<String> options;
     public Map<String, String> dependencies;
 
 }
