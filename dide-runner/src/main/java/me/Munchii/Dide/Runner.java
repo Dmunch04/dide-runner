@@ -9,6 +9,7 @@ import me.Munchii.Dide.Utils.Helper;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
 
 public class Runner {
@@ -17,7 +18,12 @@ public class Runner {
 
     public static void main(String[] args) {
         ResultModel result;
+
         if (args.length >= 1) {
+            if (args[0].equals("-v") || args[0].equals("--version"))
+                System.out.println("v1.0.2");
+                System.exit(0);
+
             result = run(String.join("", args));
         } else {
             // D test data
