@@ -30,7 +30,7 @@ public class Helper {
         if (lang != null) {
             lang.createEnvironment(projectPath, dependencies);
             ResultModel result = lang.run(projectPath, options);
-            //deleteDir(projectPath.toAbsolutePath().getParent());
+            deleteDir(projectPath.toAbsolutePath().getParent());
             return result;
         } else {
             crash("Invalid language: " + language);
