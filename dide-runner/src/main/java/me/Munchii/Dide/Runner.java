@@ -1,15 +1,14 @@
 package me.Munchii.Dide;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import me.Munchii.Dide.JSON.Payload;
-import me.Munchii.Dide.JSON.Result;
 import me.Munchii.Dide.Models.ResultModel;
 import me.Munchii.Dide.Utils.Helper;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.List;
 
 public class Runner {
@@ -21,13 +20,16 @@ public class Runner {
 
         if (args.length >= 1) {
             if (args[0].equals("-v") || args[0].equals("--version"))
+            {
                 System.out.println("v1.0.2");
                 System.exit(0);
+            }
 
-            result = run(String.join("", args));
+            result = run(String.join(" ", args));
         } else {
             // D test data
-            String json = "{ \"language\": \"d\", \"files\": [{ \"name\": \"app.d\", \"content\": \"import std.stdio;void main() { writeln(\\\"Hello, World!\\\"); }\" }], \"options\": [\"-q\"], \"dependencies\": { \"vibe-d\": \"*\" } }";
+            //String json = "{ \"language\": \"d\", \"files\": [{ \"name\": \"app.d\", \"content\": \"import std.stdio;void main() { writeln(\\\"Hello, World!\\\"); }\" }], \"options\": [\"-q\"], \"dependencies\": { \"vibe-d\": \"*\" } }";
+            String json = "{ \"language\": \"d\", \"files\": [{ \"name\": \"app.d\", \"content\": \"import viva.io;void main() { println(\\\"Hello, World!\\\"); }\" }], \"options\": [\"-q\"], \"dependencies\": { \"viva\": \"*\" } }";
 
             // Zig test data
             /*
@@ -78,25 +80,14 @@ public class Runner {
     }
 
     public static void printResult(ResultModel result) {
-        result.stdout = result.stdout.replaceAll("\"", "\\\\\"").replaceAll("\n", "?@N!");
-        result.stderr = result.stderr.replaceAll("\"", "\\\\\"").replaceAll("\n", "?@N!");
-        String error = result.getFixedErrorMessage().replaceAll("\"", "\\\\\"").replaceAll("\n", "?@N!");
-
-        StringBuilder builder = new StringBuilder();
-        builder.append("{").append("\n");
-        builder.append("\t").append("\"stdout\"").append(":").append(" ").append("\"").append(result.stdout).append("\"").append(",").append("\n");
-        builder.append("\t").append("\"stderr\"").append(":").append(" ").append("\"").append(result.stderr).append("\"").append(",").append("\n");
-        builder.append("\t").append("\"error\"").append(":").append(" ").append("\"").append(error).append("\"").append("\n");
-        builder.append("}");
+        ObjectMapper mapper = new ObjectMapper();
 
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            Result payload = mapper.readValue(builder.toString(), Result.class);
-        } catch (IOException e) {
+            String jsonResult = mapper.writeValueAsString(result);
+            System.out.println(jsonResult);
+        } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-
-        System.out.println(builder.toString());
     }
 
 }

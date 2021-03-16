@@ -18,11 +18,11 @@ import java.util.Map;
 public class Helper {
 
     public static Language getLanguage(String language) {
-        switch (language) {
-            case "d": return new D();
-            case "zig": return new Zig();
-            default: return null;
-        }
+        return switch (language) {
+            case "d" -> new D();
+            case "zig" -> new Zig();
+            default -> null;
+        };
     }
 
     public static ResultModel runLanguage(List<String> options, String language, Path projectPath, Map<String, String> dependencies) {

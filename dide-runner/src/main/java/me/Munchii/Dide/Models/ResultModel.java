@@ -2,6 +2,9 @@ package me.Munchii.Dide.Models;
 
 import java.util.Arrays;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonAlias;
+
 public class ResultModel {
 
     public String stdout;
@@ -18,12 +21,17 @@ public class ResultModel {
         return !stderr.equals("") || error != null;
     }
 
-    public String getFixedErrorMessage() {
+    public String getError() {
         if (error != null) {
-            String[] values = error.getCause().getLocalizedMessage().split(", ");
-            return String.join(", ", Arrays.copyOfRange(values, 1, values.length));
+            if (error.getCause() != null) {
+                String[] values = error.getCause().getLocalizedMessage().split(", ");
+                return String.join(", ", Arrays.copyOfRange(values, 1, values.length));
+            } else {
+                return error.getMessage();
+            }
         } else {
             return "";
         }
+
     }
 }

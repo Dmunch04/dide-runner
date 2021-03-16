@@ -13,6 +13,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
                 <configuration>
                     <source>14</source>
                     <target>14</target>
@@ -52,6 +53,7 @@
             </plugin>
         </plugins>
 
+        <defaultGoal>clean package</defaultGoal>
         <finalName>runner</finalName>
     </build>
 
@@ -59,7 +61,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.10.2</version>
+            <version>2.10.5.1</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
