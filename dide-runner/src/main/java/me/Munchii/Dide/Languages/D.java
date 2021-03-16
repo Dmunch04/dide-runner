@@ -33,6 +33,7 @@ public class D implements Language {
 
         builder.append("\t").append("\"name\": \"project\",").append("\n");
         builder.append("\t").append("\"sourcePaths\": [\"source\"],").append("\n");
+        builder.append("\t").append("\"targetType\": \"executable\",").append("\n");
 
         builder.append("\t").append("\"dependencies\": {").append("\n");
         dependencies.forEach((dep, ver) -> builder.append("\t\t").append("\"").append(dep).append("\": ").append("\"").append(ver).append("\",").append("\n"));
