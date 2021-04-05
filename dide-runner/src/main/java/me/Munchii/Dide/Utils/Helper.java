@@ -3,6 +3,7 @@ package me.Munchii.Dide.Utils;
 import me.Munchii.Dide.JSON.MemoryFile;
 import me.Munchii.Dide.Languages.D;
 import me.Munchii.Dide.Languages.Language;
+import me.Munchii.Dide.Languages.Python;
 import me.Munchii.Dide.Languages.Zig;
 import me.Munchii.Dide.Models.ResultModel;
 import org.apache.commons.io.FileUtils;
@@ -21,14 +22,15 @@ public class Helper {
         return switch (language) {
             case "d" -> new D();
             case "zig" -> new Zig();
+            case "python" -> new Python();
             default -> null;
         };
     }
 
-    public static ResultModel runLanguage(List<String> options, String language, Path projectPath, Map<String, String> dependencies) {
+    public static ResultModel runLanguage(List<String> options, String language, String entry, Path projectPath, Map<String, String> dependencies) {
         Language lang = getLanguage(language.toLowerCase(Locale.ROOT));
         if (lang != null) {
-            lang.createEnvironment(projectPath, dependencies);
+            lang.createEnvironment(projectPath, entry, dependencies);
             ResultModel result = lang.run(projectPath, options);
             deleteDir(projectPath.toAbsolutePath().getParent());
             return result;
@@ -78,6 +80,31 @@ public class Helper {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static String removeAnyExtension(String path) {
+        StringBuilder builder = new StringBuilder();
+        boolean inExt = false;
+
+        for (char c : path.toCharArray()) {
+            if (c == '.') {
+                inExt = true;
+                continue;
+            }
+
+            if (!inExt) {
+                builder.append(c);
+            } else if (!isAlpha(c)) {
+                inExt = false;
+                builder.append(c);
+            }
+        }
+
+        return builder.toString();
+    }
+
+    public static boolean isAlpha(char c) {
+        return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
     }
 
 }

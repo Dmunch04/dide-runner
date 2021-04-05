@@ -29,7 +29,7 @@ public class Runner {
         } else {
             // D test data
             //String json = "{ \"language\": \"d\", \"files\": [{ \"name\": \"app.d\", \"content\": \"import std.stdio;void main() { writeln(\\\"Hello, World!\\\"); }\" }], \"options\": [\"-q\"], \"dependencies\": { \"vibe-d\": \"*\" } }";
-            String json = "{ \"language\": \"d\", \"files\": [{ \"name\": \"app.d\", \"content\": \"import viva.io;void main() { println(\\\"Hello, World!\\\"); }\" }], \"options\": [\"-q\"], \"dependencies\": { \"viva\": \"*\" } }";
+            //String json = "{ \"language\": \"d\", \"files\": [{ \"name\": \"app.d\", \"content\": \"import viva.io;void main() { println(\\\"Hello, World!\\\"); }\" }], \"options\": [\"-q\"], \"dependencies\": { \"viva\": \"*\" } }";
             //String json = "{\"dependencies\":{\"viva\":\"*\"},\"language\":\"d\",\"options\":[],\"files\":[{\"content\":\"import hello;\\r\\n\\r\\nvoid main()\\r\\n{\\r\\n    sayHello(\\\"Daniel\\\");\\r\\n}\",\"name\":\"app.d\"},{\"content\":\"import viva.io;\\r\\n\\r\\npublic void sayHello(string name)\\r\\n{\\r\\n    println(\\\"Hello, \\\" ~ name ~ \\\"!\\\");\\r\\n}\",\"name\":\"hello.d\"}]}";
 
             // Zig test data
@@ -48,6 +48,22 @@ public class Runner {
                 }
             """;
             */
+
+            // Python test data
+            String json = """
+                {
+                    "language": "python",
+                    "entry": "main.py:main",
+                    "options": ["-q"],
+                    "dependencies": {"DavesLogger": "*"},
+                    "files": [
+                        {
+                            "name": "main.py",
+                            "content": "from DavesLogger import Logs\\ndef main():\\n\\tLogs.Error(\\"YEET\\")\\n"
+                        }
+                    ]
+                }
+            """;
 
             result = run(json);
         }
@@ -68,11 +84,10 @@ public class Runner {
                 Helper.crash("No files given!");
             }
 
-            System.out.println(payload.files);
             List<Path> paths = Helper.writeFiles(payload.files);
 
             ResultModel result;
-            result = Helper.runLanguage(payload.options, payload.language, paths.get(0).toAbsolutePath().getParent(), payload.dependencies);
+            result = Helper.runLanguage(payload.options, payload.language, payload.entry, paths.get(0).toAbsolutePath().getParent(), payload.dependencies);
             return result;
         } catch (IOException e) {
             e.printStackTrace();

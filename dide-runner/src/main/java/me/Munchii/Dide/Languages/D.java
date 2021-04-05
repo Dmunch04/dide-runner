@@ -27,13 +27,14 @@ public class D implements Language {
     }
 
     @Override
-    public void createEnvironment(Path basePath, Map<String, String> dependencies) {
+    public void createEnvironment(Path basePath, String entry, Map<String, String> dependencies) {
         StringBuilder builder = new StringBuilder();
         builder.append("{").append("\n");
 
         builder.append("\t").append("\"name\": \"project\",").append("\n");
         builder.append("\t").append("\"sourcePaths\": [\"source\"],").append("\n");
         builder.append("\t").append("\"targetType\": \"executable\",").append("\n");
+        builder.append("\t").append("\"mainSourceFile\": \"").append(entry).append("\",").append("\n");
 
         builder.append("\t").append("\"dependencies\": {").append("\n");
         dependencies.forEach((dep, ver) -> builder.append("\t\t").append("\"").append(dep).append("\": ").append("\"").append(ver).append("\",").append("\n"));

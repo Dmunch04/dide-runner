@@ -28,7 +28,7 @@ public class Zig implements Language {
     }
 
     @Override
-    public void createEnvironment(Path basePath, Map<String, String> dependencies) {
+    public void createEnvironment(Path basePath, String entry, Map<String, String> dependencies) {
         StringBuilder builder = new StringBuilder();
         builder.append("const Builder = @import(\"std\").build.Builder;").append("\n");
         builder.append("pub fn build(b: *Builder) void { ").append("\n");
@@ -41,6 +41,7 @@ public class Zig implements Language {
         builder.append("b.default_step.dependOn(&exe.step);").append("\n");
         builder.append("b.installArtifact(exe);").append("\n");
         builder.append(" }");
+        // TODO: integrate the entry point
 
         try {
             Path path = Paths.get(basePath.toAbsolutePath().getParent().toString(), "build.zig").toAbsolutePath();
