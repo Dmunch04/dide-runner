@@ -51,19 +51,23 @@ public class Runner {
 
             // Python test data
             String json = """
-                {
-                    "language": "python",
-                    "entry": "main.py:main",
-                    "options": ["-q"],
-                    "dependencies": {"DavesLogger": "*"},
-                    "files": [
                         {
-                            "name": "main.py",
-                            "content": "from DavesLogger import Logs\\ndef main():\\n\\tLogs.Error(\\"YEET\\")\\n"
+                            "language": "js",
+                            "entry": "a.js",
+                            "options": ["-q"],
+                            "dependencies": {},
+                            "files": [
+                                {
+                                    "name": "a.js",
+                                    "content": "import { to_a } from './b.js';\\nconsole.log(to_a());\\n"
+                                },
+                                {
+                                    "name": "b.js",
+                                    "content": "export function to_a() { return 1; }"
+                                }
+                            ]
                         }
-                    ]
-                }
-            """;
+                    """;
 
             result = run(json);
         }

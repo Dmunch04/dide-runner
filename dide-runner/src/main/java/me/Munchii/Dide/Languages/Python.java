@@ -45,7 +45,8 @@ public class Python implements Language {
 
         builder.append("\n").append("[tool.poetry.dependencies]").append("\n");
         // TODO: is this a good enough solution?
-        builder.append("python = \"^3.8\"").append("\n");
+        //builder.append("python = \"^3.8\"").append("\n");
+        builder.append("python = \"^3.7\"").append("\n");
         dependencies.forEach((dep, ver) -> builder.append("\"").append(dep).append("\"").append(" = ").append("\"").append(ver).append("\"").append("\n"));
 
         builder.append("\n").append("[tool.poetry.scripts]").append("\n");

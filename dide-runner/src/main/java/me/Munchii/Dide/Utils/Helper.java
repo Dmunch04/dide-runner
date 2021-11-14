@@ -1,10 +1,7 @@
 package me.Munchii.Dide.Utils;
 
 import me.Munchii.Dide.JSON.MemoryFile;
-import me.Munchii.Dide.Languages.D;
-import me.Munchii.Dide.Languages.Language;
-import me.Munchii.Dide.Languages.Python;
-import me.Munchii.Dide.Languages.Zig;
+import me.Munchii.Dide.Languages.*;
 import me.Munchii.Dide.Models.ResultModel;
 import org.apache.commons.io.FileUtils;
 
@@ -23,6 +20,7 @@ public class Helper {
             case "d" -> new D();
             case "zig" -> new Zig();
             case "python" -> new Python();
+            case "js", "javascript" -> new JavaScript();
             default -> null;
         };
     }
