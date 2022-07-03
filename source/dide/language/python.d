@@ -25,7 +25,14 @@ public class Python : Language
         File reqs = File(projectPath.buildPath("requirements.txt"), "w");
         foreach (dependency; payload.dependencies.byKeyValue)
         {
-            reqs.writeln(dependency.key ~ "==" ~ dependency.value);
+            if (dependency.value == "" || dependency.value == "*")
+            {
+                reqs.writeln(dependency.key);
+            }
+            else
+            {
+                reqs.writeln(dependency.key ~ "==" ~ dependency.value);
+            }
         }
         reqs.close();
 
