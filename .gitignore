@@ -9,6 +9,7 @@ dide-runner.dll
 dide-runner.a
 dide-runner.lib
 dide-runner-test-*
+dide-runner.pdb
 *.exe
 *.o
 *.obj
