@@ -7,11 +7,17 @@ import std.process : spawnProcess, wait, Config;
 
 import dide.models;
 
+/++
+ + runs a command at the specified path and returns the console result of the command
+ +/
 public ResultModel runCommand(string projectPath, string cmd)
 {
     return runCommand(projectPath, cmd.split(" "));
 }
 
+/++
+ + runs a command at the specified path and returns the console result of the command
+ +/
 public ResultModel runCommand(string projectPath, string[] args)
 {
     auto outFile = File(projectPath.buildPath(".out"), "w");

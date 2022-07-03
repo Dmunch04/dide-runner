@@ -10,6 +10,9 @@ import std.stdio : File, write;
 
 import dide.models : MemoryFile;
 
+/++
+ + creates a temporary folder and returns its path
+ +/
 public string createTempFolder()
 {
     auto id = letters.byCodeUnit.randomSample(8).to!string;
@@ -19,6 +22,9 @@ public string createTempFolder()
     return path;
 }
 
+/++
+ + writes an array of `MemoryFile` to disk at the specified path
+ +/
 public void writeFiles(string projectPath, MemoryFile[] files)
 {
     string path = projectPath.buildPath("source");
@@ -30,6 +36,9 @@ public void writeFiles(string projectPath, MemoryFile[] files)
     }
 }
 
+/++
+ + writes a `MemoryFile` to disk at the specified path
+ +/
 public void writeFile(string projectPath, MemoryFile file)
 {
     auto f = File(projectPath.buildPath(file.name), "w");

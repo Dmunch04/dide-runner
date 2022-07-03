@@ -12,6 +12,9 @@ import dide.utils : createTempFolder, writeFiles, getLanguage;
 import dide.command : runCommand;
 import dide.language : Language;
 
+/++
+ + main class of the program which handles the input arguments and prints the result to console
+ +/
 public class Program
 {
     public this(string[] args)
