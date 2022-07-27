@@ -58,7 +58,7 @@ public class Program
         MemoryFile[] files;
         foreach (file; jsonData["files"].array())
         {
-            files ~= MemoryFile(file["name"].str(), file["content"].str());
+            files ~= MemoryFile(file["title"].str(), file["content"].str());
         }
 
         string[] options;

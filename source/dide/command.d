@@ -20,6 +20,7 @@ public ResultModel runCommand(string projectPath, string cmd)
  +/
 public ResultModel runCommand(string projectPath, string[] args)
 {
+    // TODO: use streams instead of files
     auto outFile = File(projectPath.buildPath(".out"), "w");
     auto errFile = File(projectPath.buildPath(".err"), "w");
     auto pid = spawnProcess(args, stdin, outFile, errFile, null, Config(Config.Flags.none), projectPath);
