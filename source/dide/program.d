@@ -58,7 +58,7 @@ public class Program
         MemoryFile[] files;
         foreach (file; jsonData["files"].array())
         {
-            files ~= MemoryFile(file["title"].str(), file["content"].str());
+            files ~= MemoryFile(file["name"].str(), file["content"].str());
         }
 
         string[] options;
@@ -87,9 +87,9 @@ public class Program
         }
 
         string projectPath = createTempFolder();
-        scope(exit) rmdirRecurse(projectPath);
+        //scope(exit) rmdirRecurse(projectPath);
 
-        writeFiles(projectPath, payload.files);
+        //writeFiles(projectPath, payload.files);
 
         Language lang = getLanguage(payload.language);
         if (lang is null)

@@ -6,13 +6,14 @@ import std.path : buildPath;
 import dide.language : Language;
 import dide.command : runCommand;
 import dide.models : ResultModel, Payload;
+import dide.utils : writeFiles;
 
 public class Python : Language
 {
     public ResultModel run(string projectPath, Payload payload)
     {
-        string[] args = ["python", "source/" ~ payload.entry];
-        if (payload.options.length > 1)
+        string[] args = ["python3", "source/" ~ payload.entry];
+        if (payload.options.length > 0)
         {
             args ~= payload.options;
         }
@@ -22,6 +23,8 @@ public class Python : Language
 
     public void createEnv(string projectPath, Payload payload)
     {
+        writeFiles(projectPath.buildPath("source"), payload.files);
+
         File reqs = File(projectPath.buildPath("requirements.txt"), "w");
         foreach (dependency; payload.dependencies.byKeyValue)
         {
@@ -36,6 +39,6 @@ public class Python : Language
         }
         reqs.close();
 
-        runCommand(projectPath, ["pip", "install", "-r", "requirements.txt"]);
+        runCommand(projectPath, ["pip3", "install", "-r", "requirements.txt"]);
     }
 }

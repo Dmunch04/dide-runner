@@ -5,5 +5,6 @@
 	"copyright": "Copyright © 2022, Munchii",
 	"description": "A minimal D application.",
 	"license": "MIT",
-	"name": "dide-runner"
+	"name": "dide-runner",
+	"targetName": "runner"
 }

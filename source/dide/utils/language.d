@@ -9,8 +9,9 @@ public Language getLanguage(string lang)
 {
     switch (lang)
     {
-        case "d": return new Dlang();
-        case "python": return new Python();
+        case "d", "dlang": return new Dlang();
+        case "py", "python": return new Python();
+        case "java": return new Java();
         default: return null;
     }
 }

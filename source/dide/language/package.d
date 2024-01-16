@@ -2,6 +2,7 @@ module dide.language;
 
 public import dide.language.dlang;
 public import dide.language.python;
+public import dide.language.java;
 
 import dide.models : ResultModel, Payload;
 

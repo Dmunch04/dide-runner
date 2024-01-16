@@ -5,7 +5,7 @@ import std.conv : to;
 import std.path : buildPath;
 import std.random : randomSample;
 import std.utf : byCodeUnit;
-import std.file : tempDir, mkdir;
+import std.file : tempDir, mkdir, mkdirRecurse, exists;
 import std.stdio : File, write;
 
 import dide.models : MemoryFile;
@@ -27,8 +27,12 @@ public string createTempFolder()
  +/
 public void writeFiles(string projectPath, MemoryFile[] files)
 {
-    string path = projectPath.buildPath("source");
-    mkdir(path);
+    //string path = projectPath.buildPath("src");
+    string path = projectPath;
+    if (!path.exists)
+    {
+        mkdirRecurse(path);
+    }
 
     foreach (file; files)
     {

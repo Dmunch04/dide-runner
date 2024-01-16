@@ -7,13 +7,14 @@ import std.path : buildPath;
 import dide.language : Language;
 import dide.command : runCommand;
 import dide.models : ResultModel, Payload;
+import dide.utils : writeFiles;
 
 public class Dlang : Language
 {
     public ResultModel run(string projectPath, Payload payload)
     {
         string[] args = ["dub", "run"];
-        if (payload.options.length > 1)
+        if (payload.options.length > 0)
         {
             args ~= payload.options;
         }
@@ -23,6 +24,8 @@ public class Dlang : Language
 
     public void createEnv(string projectPath, Payload payload)
     {
+        writeFiles(projectPath.buildPath("source"), payload.files);
+
         JSONValue config;
 
         config["name"] = "dide-project";
