@@ -8,7 +8,7 @@ import std.array : appender;
 import std.base64 : Base64;
 
 import dide.models : ResultModel, Payload, MemoryFile;
-import dide.utils : createTempFolder, writeFiles, getLanguage;
+import dide.utils : createTempFolder, getLanguage;
 import dide.command : runCommand;
 import dide.language : Language;
 
@@ -87,9 +87,7 @@ public class Program
         }
 
         string projectPath = createTempFolder();
-        //scope(exit) rmdirRecurse(projectPath);
-
-        //writeFiles(projectPath, payload.files);
+        scope(exit) rmdirRecurse(projectPath);
 
         Language lang = getLanguage(payload.language);
         if (lang is null)

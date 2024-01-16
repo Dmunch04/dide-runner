@@ -12,6 +12,9 @@ public Language getLanguage(string lang)
         case "d", "dlang": return new Dlang();
         case "py", "python": return new Python();
         case "java": return new Java();
+        case "kt", "kotlin": return new Kotlin();
+        case "cs", "csharp": return new CSharp();
+        case "js", "javascript": return new Javascript();
         default: return null;
     }
 }

@@ -1,4 +1,4 @@
-module dide.language.java;
+module dide.language.kotlin;
 
 import std.stdio : File;
 import std.path : buildPath, stripExtension;
@@ -11,6 +11,7 @@ import dide.models : ResultModel, Payload;
 import dide.utils : writeFiles;
 
 enum GRADLE_TEMPLATE = "plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.9.22'
     id 'application'
 }
 repositories {
@@ -24,7 +25,7 @@ application {
 }
 ";
 
-public class Java : Language
+public class Kotlin : Language
 {
     public ResultModel run(string projectPath, Payload payload)
     {
@@ -40,7 +41,7 @@ public class Java : Language
 
     public void createEnv(string projectPath, Payload payload)
     {
-        writeFiles(projectPath.buildPath("src/main/java/dide"), payload.files);
+        writeFiles(projectPath.buildPath("src/main/kotlin/dide"), payload.files);
 
         string[] dependencies;
         foreach (dependency; payload.dependencies.byKeyValue)
@@ -56,7 +57,7 @@ public class Java : Language
         }
 
         File gradle = File(projectPath.buildPath("build.gradle"), "w");
-        gradle.write(GRADLE_TEMPLATE.format(dependencies.join("\n"), stripExtension(payload.entry)));
+        gradle.write(GRADLE_TEMPLATE.format(dependencies.join("\n"), stripExtension(payload.entry) ~ "Kt"));
         gradle.close();
     }
 }

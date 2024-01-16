@@ -3,6 +3,9 @@ module dide.language;
 public import dide.language.dlang;
 public import dide.language.python;
 public import dide.language.java;
+public import dide.language.kotlin;
+public import dide.language.csharp;
+public import dide.language.javascript;
 
 import dide.models : ResultModel, Payload;
 

@@ -27,16 +27,14 @@ public string createTempFolder()
  +/
 public void writeFiles(string projectPath, MemoryFile[] files)
 {
-    //string path = projectPath.buildPath("src");
-    string path = projectPath;
-    if (!path.exists)
+    if (!projectPath.exists)
     {
-        mkdirRecurse(path);
+        mkdirRecurse(projectPath);
     }
 
     foreach (file; files)
     {
-        writeFile(path, file);
+        writeFile(projectPath, file);
     }
 }
 

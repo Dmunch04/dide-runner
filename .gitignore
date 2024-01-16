@@ -3,6 +3,7 @@ docs.json
 __dummy.html
 docs/
 /dide-runner
+/runner
 dide-runner.so
 dide-runner.dylib
 dide-runner.dll
