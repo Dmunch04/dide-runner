@@ -52,6 +52,13 @@ printf "${GREEN}"
 echo -e "${LIGHT_GRAY}finished in ${YELLOW}$(($(($(date +%s%N)-$start))/1000000))ms${CLEAR}"
 echo
 
-# typescript, go, rust, zig?, scala?, ?
+echo "starting typescript test"
+start=$(date +%s%N)
+printf "${GREEN}"
+./runner eyJsYW5ndWFnZSI6InRzIiwiZW50cnkiOiJhcHAudHMiLCJvcHRpb25zIjpbIi1xIl0sImRlcGVuZGVuY2llcyI6e30sImZpbGVzIjpbeyJuYW1lIjoiYXBwLnRzIiwiY29udGVudCI6ImxldCBtZXNzYWdlOm51bWJlcj02OTtjb25zb2xlLmxvZyhtZXNzYWdlKTsifV19
+echo -e "${LIGHT_GRAY}finished in ${YELLOW}$(($(($(date +%s%N)-$start))/1000000))ms${CLEAR}"
+echo
+
+# go, rust, zig?, scala?, ?
 
 echo -e "${CLEAR}finished all tests in ${GREEN}$(($(($(date +%s%N)-$all_start))/1000000))ms"

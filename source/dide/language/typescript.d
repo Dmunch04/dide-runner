@@ -1,4 +1,4 @@
-module dide.language.javascript;
+module dide.language.typescript;
 
 import std.json;
 import std.stdio : File;
@@ -17,11 +17,23 @@ enum PACKAGE_TEMPLATE = `{
 }
 `;
 
-public class Javascript : Language
+enum TS_TEMPLATE = `{
+    "extends": "@tsconfig/node18/tsconfig.json",
+    "include": ["src/**/*"],
+    "outDir": "./build",
+    "exclude": ["node_modules", "build"],
+    "compilerOptions": {
+        "allowJs": true,
+        "types": ["node"]
+    }
+}
+`;
+
+public class Typescript : Language
 {
     public ResultModel run(string projectPath, Payload payload)
     {
-        string[] args = ["node", "src/" ~ payload.entry];
+        string[] args = ["node", "src/" ~ stripExtension(payload.entry) ~ ".js"];
         if (payload.options.length > 0)
         {
             args ~= payload.options;
@@ -36,6 +48,9 @@ public class Javascript : Language
 
         string[string] _;
         JSONValue dependencies = JSONValue(_);
+        dependencies["typescript"] = JSONValue("^5.3.3");
+        dependencies["@tsconfig/node18"] = JSONValue("^18.2.2");
+        dependencies["@types/node"] = JSONValue("20.11.5");
         foreach (dependency; payload.dependencies.byKeyValue)
         {
             dependencies[dependency.key] = JSONValue(dependency.value);
@@ -45,6 +60,11 @@ public class Javascript : Language
         packageJson.write(PACKAGE_TEMPLATE.format(dependencies.toString));
         packageJson.close();
 
+        File typescriptConfig = File(projectPath.buildPath("tsconfig.json"), "w");
+        typescriptConfig.write(TS_TEMPLATE);
+        typescriptConfig.close();
+
         runCommand(projectPath, ["npm", "install"]);
+        runCommand(projectPath, ["npx", "--yes", "tsc"]);
     }
 }

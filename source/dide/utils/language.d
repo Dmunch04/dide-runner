@@ -15,6 +15,7 @@ public Language getLanguage(string lang)
         case "kt", "kotlin": return new Kotlin();
         case "cs", "csharp": return new CSharp();
         case "js", "javascript": return new Javascript();
+        case "ts", "typescript": return new Typescript();
         default: return null;
     }
 }
