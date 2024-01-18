@@ -2,7 +2,7 @@ module dide.utils.files;
 
 import std.ascii : letters;
 import std.conv : to;
-import std.path : buildPath;
+import std.path : buildPath, dirName;
 import std.random : randomSample;
 import std.utf : byCodeUnit;
 import std.file : tempDir, mkdir, mkdirRecurse, exists;
@@ -43,7 +43,10 @@ public void writeFiles(string projectPath, MemoryFile[] files)
  +/
 public void writeFile(string projectPath, MemoryFile file)
 {
-    auto f = File(projectPath.buildPath(file.name), "w");
+    auto path = projectPath.buildPath(file.name);
+    auto dir = dirName(path);
+    if (!exists(dir)) mkdirRecurse(dir);
+    auto f = File(path, "w");
     f.write(file.content);
     f.close();
 }
