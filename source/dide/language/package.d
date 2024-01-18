@@ -10,7 +10,7 @@ public import dide.language.typescript;
 public import dide.language.golang;
 public import dide.language.rust;
 
-import dide.models : ResultModel, Payload;
+import dide.models : ResultModel, Payload, ProgramOptions;
 
 /++
  + interface base for project language
@@ -20,7 +20,7 @@ public interface Language
     /++
      + run the project and returns the result
      +/
-    public ResultModel run(string projectPath, Payload payload);
+    public ResultModel run(string projectPath, Payload payload, ProgramOptions pOptions);
 
     /++
      + create the necessary environment for the specific language

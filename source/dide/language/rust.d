@@ -6,8 +6,8 @@ import std.format : format;
 import std.array : join;
 
 import dide.language : Language;
-import dide.command : runCommand;
-import dide.models : ResultModel, Payload;
+import dide.command : runCommand, runCommands;
+import dide.models : ResultModel, Payload, ProgramOptions;
 import dide.utils : writeFiles;
 
 enum CARGO_TEMPLATE = `[package]
@@ -21,7 +21,7 @@ edition = "2021"
 
 public class Rust : Language
 {
-    public ResultModel run(string projectPath, Payload payload)
+    public ResultModel run(string projectPath, Payload payload, ProgramOptions pOptions)
     {
         string[] args = ["cargo", "run"];
         if (payload.options.length > 0)
@@ -29,7 +29,16 @@ public class Rust : Language
             args ~= payload.options;
         }
 
-        return runCommand(projectPath, args);
+        if (pOptions.outputSetup)
+        {
+            return runCommands(projectPath, ["cargo", "update"], ["cargo", "build"], args);
+        }
+        else
+        {
+            runCommand(projectPath, ["cargo", "update"]);
+            runCommand(projectPath, ["cargo", "build"]);
+            return runCommand(projectPath, args);
+        }
     }
 
     public void createEnv(string projectPath, Payload payload)
@@ -45,8 +54,5 @@ public class Rust : Language
         File modFile = File(projectPath.buildPath("Cargo.toml"), "w");
         modFile.write(CARGO_TEMPLATE.format(dependencies.join("\n")));
         modFile.close();
-
-        runCommand(projectPath, ["cargo", "update"]);
-        runCommand(projectPath, ["cargo", "build"]);
     }
 }

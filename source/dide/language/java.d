@@ -7,7 +7,7 @@ import std.array : join;
 
 import dide.language : Language;
 import dide.command : runCommand;
-import dide.models : ResultModel, Payload;
+import dide.models : ResultModel, Payload, ProgramOptions;
 import dide.utils : writeFiles;
 
 enum GRADLE_TEMPLATE = "plugins {
@@ -26,7 +26,7 @@ application {
 
 public class Java : Language
 {
-    public ResultModel run(string projectPath, Payload payload)
+    public ResultModel run(string projectPath, Payload payload, ProgramOptions pOptions)
     {
         string[] args = ["gradle"];
         if (payload.options.length > 0)

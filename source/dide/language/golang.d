@@ -6,8 +6,8 @@ import std.format : format;
 import std.array : join;
 
 import dide.language : Language;
-import dide.command : runCommand;
-import dide.models : ResultModel, Payload;
+import dide.command : runCommand, runCommands;
+import dide.models : ResultModel, Payload, ProgramOptions;
 import dide.utils : writeFiles;
 
 enum MOD_TEMPLATE = `module dide/app
@@ -19,7 +19,7 @@ require (
 
 public class Golang : Language
 {
-    public ResultModel run(string projectPath, Payload payload)
+    public ResultModel run(string projectPath, Payload payload, ProgramOptions pOptions)
     {
         string[] args = ["go", "run"];
         if (payload.options.length > 0)
@@ -37,7 +37,16 @@ public class Golang : Language
         }
         args ~= ".";
 
-        return runCommand(projectPath, args);
+        if (pOptions.outputSetup)
+        {
+            return runCommands(projectPath, ["go", "install"], args);
+        }
+        else
+        {
+            runCommand(projectPath, ["go", "install"]);
+            return runCommand(projectPath, args);
+        }
+
     }
 
     public void createEnv(string projectPath, Payload payload)
@@ -53,7 +62,5 @@ public class Golang : Language
         File modFile = File(projectPath.buildPath("go.mod"), "w");
         modFile.write(MOD_TEMPLATE.format(dependencies.join("\n")));
         modFile.close();
-
-        runCommand(projectPath, ["go", "install"]);
     }
 }

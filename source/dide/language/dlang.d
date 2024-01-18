@@ -6,12 +6,12 @@ import std.path : buildPath;
 
 import dide.language : Language;
 import dide.command : runCommand;
-import dide.models : ResultModel, Payload;
+import dide.models : ResultModel, Payload, ProgramOptions;
 import dide.utils : writeFiles;
 
 public class Dlang : Language
 {
-    public ResultModel run(string projectPath, Payload payload)
+    public ResultModel run(string projectPath, Payload payload, ProgramOptions pOptions)
     {
         string[] args = ["dub", "run"];
         if (payload.options.length > 0)

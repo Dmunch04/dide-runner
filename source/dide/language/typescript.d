@@ -6,8 +6,8 @@ import std.path : buildPath, stripExtension;
 import std.format : format;
 
 import dide.language : Language;
-import dide.command : runCommand;
-import dide.models : ResultModel, Payload;
+import dide.command : runCommand, runCommands;
+import dide.models : ResultModel, Payload, ProgramOptions;
 import dide.utils : writeFiles;
 
 enum PACKAGE_TEMPLATE = `{
@@ -31,7 +31,7 @@ enum TS_TEMPLATE = `{
 
 public class Typescript : Language
 {
-    public ResultModel run(string projectPath, Payload payload)
+    public ResultModel run(string projectPath, Payload payload, ProgramOptions pOptions)
     {
         string[] args = ["node", "src/" ~ stripExtension(payload.entry) ~ ".js"];
         if (payload.options.length > 0)
@@ -39,7 +39,16 @@ public class Typescript : Language
             args ~= payload.options;
         }
 
-        return runCommand(projectPath, args);
+        if (pOptions.outputSetup)
+        {
+            return runCommands(projectPath, ["npm", "install"], ["npx", "--yes", "tsc"], args);
+        }
+        else
+        {
+            runCommand(projectPath, ["npm", "install"]);
+            runCommand(projectPath, ["npx", "--yes", "tsc"]);
+            return runCommand(projectPath, args);
+        }
     }
 
     public void createEnv(string projectPath, Payload payload)
@@ -63,8 +72,5 @@ public class Typescript : Language
         File typescriptConfig = File(projectPath.buildPath("tsconfig.json"), "w");
         typescriptConfig.write(TS_TEMPLATE);
         typescriptConfig.close();
-
-        runCommand(projectPath, ["npm", "install"]);
-        runCommand(projectPath, ["npx", "--yes", "tsc"]);
     }
 }

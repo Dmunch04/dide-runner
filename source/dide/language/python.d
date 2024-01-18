@@ -4,13 +4,13 @@ import std.stdio : File;
 import std.path : buildPath;
 
 import dide.language : Language;
-import dide.command : runCommand;
-import dide.models : ResultModel, Payload;
+import dide.command : runCommand, runCommands;
+import dide.models : ResultModel, Payload, ProgramOptions;
 import dide.utils : writeFiles;
 
 public class Python : Language
 {
-    public ResultModel run(string projectPath, Payload payload)
+    public ResultModel run(string projectPath, Payload payload, ProgramOptions pOptions)
     {
         string[] args = ["python3", "source/" ~ payload.entry];
         if (payload.options.length > 0)
@@ -18,7 +18,15 @@ public class Python : Language
             args ~= payload.options;
         }
 
-        return runCommand(projectPath, args);
+        if (pOptions.outputSetup)
+        {
+            return runCommands(projectPath, ["pip3", "install", "-r", "requirements.txt"], args);
+        }
+        else
+        {
+            runCommand(projectPath, ["pip3", "install", "-r", "requirements.txt"]);
+            return runCommand(projectPath, args);
+        }
     }
 
     public void createEnv(string projectPath, Payload payload)
@@ -38,7 +46,5 @@ public class Python : Language
             }
         }
         reqs.close();
-
-        runCommand(projectPath, ["pip3", "install", "-r", "requirements.txt"]);
     }
 }

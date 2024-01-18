@@ -6,8 +6,8 @@ import std.path : buildPath, stripExtension;
 import std.format : format;
 
 import dide.language : Language;
-import dide.command : runCommand;
-import dide.models : ResultModel, Payload;
+import dide.command : runCommand, runCommands;
+import dide.models : ResultModel, Payload, ProgramOptions;
 import dide.utils : writeFiles;
 
 enum PACKAGE_TEMPLATE = `{
@@ -19,7 +19,7 @@ enum PACKAGE_TEMPLATE = `{
 
 public class Javascript : Language
 {
-    public ResultModel run(string projectPath, Payload payload)
+    public ResultModel run(string projectPath, Payload payload, ProgramOptions pOptions)
     {
         string[] args = ["node", "src/" ~ payload.entry];
         if (payload.options.length > 0)
@@ -27,7 +27,16 @@ public class Javascript : Language
             args ~= payload.options;
         }
 
-        return runCommand(projectPath, args);
+        if (pOptions.outputSetup)
+        {
+            return runCommands(projectPath, ["npm", "install"], args);
+        }
+        else
+        {
+            runCommand(projectPath, ["npm", "install"]);
+            return runCommand(projectPath, args);
+        }
+
     }
 
     public void createEnv(string projectPath, Payload payload)
@@ -44,7 +53,5 @@ public class Javascript : Language
         File packageJson = File(projectPath.buildPath("package.json"), "w");
         packageJson.write(PACKAGE_TEMPLATE.format(dependencies.toString));
         packageJson.close();
-
-        runCommand(projectPath, ["npm", "install"]);
     }
 }

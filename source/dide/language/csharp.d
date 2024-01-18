@@ -6,8 +6,8 @@ import std.format : format;
 import std.array : join;
 
 import dide.language : Language;
-import dide.command : runCommand;
-import dide.models : ResultModel, Payload;
+import dide.command : runCommand, runCommands;
+import dide.models : ResultModel, Payload, ProgramOptions;
 import dide.utils : writeFiles;
 
 enum CSPROJ_TEMPLATE = `<Project Sdk="Microsoft.NET.Sdk">
@@ -26,7 +26,7 @@ enum CSPROJ_TEMPLATE = `<Project Sdk="Microsoft.NET.Sdk">
 
 public class CSharp : Language
 {
-    public ResultModel run(string projectPath, Payload payload)
+    public ResultModel run(string projectPath, Payload payload, ProgramOptions pOptions)
     {
         string[] args = ["dotnet", "run"];
         if (payload.options.length > 0)
@@ -34,7 +34,16 @@ public class CSharp : Language
             args ~= payload.options;
         }
 
-        return runCommand(projectPath, args);
+        if (pOptions.outputSetup)
+        {
+            return runCommands(projectPath, ["dotnet", "restore"], args);
+        }
+        else
+        {
+            runCommand(projectPath, ["dotnet", "restore"]);
+            return runCommand(projectPath, args);
+        }
+
     }
 
     public void createEnv(string projectPath, Payload payload)
@@ -50,7 +59,5 @@ public class CSharp : Language
         File csproj = File(projectPath.buildPath("dide.csproj"), "w");
         csproj.write(CSPROJ_TEMPLATE.format(dependencies.join("\n")));
         csproj.close();
-
-        runCommand(projectPath, ["dotnet", "restore"]);
     }
 }

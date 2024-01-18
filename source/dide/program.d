@@ -7,7 +7,7 @@ import std.file : rmdirRecurse;
 import std.array : appender;
 import std.base64 : Base64;
 
-import dide.models : ResultModel, Payload, MemoryFile;
+import dide.models : ResultModel, Payload, MemoryFile, ProgramOptions;
 import dide.utils : createTempFolder, getLanguage;
 import dide.command : runCommand;
 import dide.language : Language;
@@ -17,6 +17,8 @@ import dide.language : Language;
  +/
 public class Program
 {
+    private bool outputSetup = false;
+
     public this(string[] args)
     {
         if (args.length < 1)
@@ -29,6 +31,8 @@ public class Program
 
     private void handleArgs(string[] args)
     {
+        import std.algorithm : canFind;
+
         if (args[0] == "-v" || args[0] == "--version")
         {
             writeln("Dide Runner v0.1.0b1");
@@ -39,6 +43,10 @@ public class Program
         }
         else
         {
+            if (args.canFind("--output-setup")) {
+                outputSetup = true;
+            }
+
             ResultModel res = run(args[0]);
             JSONValue model;
             model["stdout"] = res.stdout;
@@ -87,7 +95,7 @@ public class Program
         }
 
         string projectPath = createTempFolder();
-        scope(exit) rmdirRecurse(projectPath);
+        //scope(exit) rmdirRecurse(projectPath);
 
         Language lang = getLanguage(payload.language);
         if (lang is null)
@@ -96,6 +104,6 @@ public class Program
         }
 
         lang.createEnv(projectPath, payload);
-        return lang.run(projectPath, payload);
+        return lang.run(projectPath, payload, ProgramOptions(outputSetup));
     }
 }
