@@ -59,6 +59,13 @@ printf "${GREEN}"
 echo -e "${LIGHT_GRAY}finished in ${YELLOW}$(($(($(date +%s%N)-$start))/1000000))ms${CLEAR}"
 echo
 
-# go, rust, zig?, scala?, ?
+echo "starting golang test"
+start=$(date +%s%N)
+printf "${GREEN}"
+./runner eyJsYW5ndWFnZSI6ImdvIiwiZW50cnkiOiJhcHAuZ28iLCJvcHRpb25zIjpbIi1xIl0sImRlcGVuZGVuY2llcyI6e30sImZpbGVzIjpbeyJuYW1lIjoiYXBwLmdvIiwiY29udGVudCI6InBhY2thZ2UgbWFpblxuaW1wb3J0IFwiZm10XCJcbmZ1bmMgbWFpbigpe2ZtdC5QcmludGxuKDY5KX0ifV19
+echo -e "${LIGHT_GRAY}finished in ${YELLOW}$(($(($(date +%s%N)-$start))/1000000))ms${CLEAR}"
+echo
+
+# rust, zig?, scala?, ?
 
 echo -e "${CLEAR}finished all tests in ${GREEN}$(($(($(date +%s%N)-$all_start))/1000000))ms"

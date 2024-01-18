@@ -7,6 +7,7 @@ public import dide.language.kotlin;
 public import dide.language.csharp;
 public import dide.language.javascript;
 public import dide.language.typescript;
+public import dide.language.golang;
 
 import dide.models : ResultModel, Payload;
 

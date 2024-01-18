@@ -16,6 +16,7 @@ public Language getLanguage(string lang)
         case "cs", "csharp": return new CSharp();
         case "js", "javascript": return new Javascript();
         case "ts", "typescript": return new Typescript();
+        case "go", "golang": return new Golang();
         default: return null;
     }
 }
