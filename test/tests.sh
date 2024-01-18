@@ -66,6 +66,13 @@ printf "${GREEN}"
 echo -e "${LIGHT_GRAY}finished in ${YELLOW}$(($(($(date +%s%N)-$start))/1000000))ms${CLEAR}"
 echo
 
-# rust, zig?, scala?, ?
+echo "starting rust test"
+start=$(date +%s%N)
+printf "${GREEN}"
+./runner eyJsYW5ndWFnZSI6InJzIiwiZW50cnkiOiJtYWluLnJzIiwib3B0aW9ucyI6WyItcSJdLCJkZXBlbmRlbmNpZXMiOnt9LCJmaWxlcyI6W3sibmFtZSI6Im1haW4ucnMiLCJjb250ZW50IjoiZm4gbWFpbigpe3ByaW50bG4hKFwie31cIiw2OSk7fSJ9XX0=
+echo -e "${LIGHT_GRAY}finished in ${YELLOW}$(($(($(date +%s%N)-$start))/1000000))ms${CLEAR}"
+echo
+
+# zig?, scala?, ?
 
 echo -e "${CLEAR}finished all tests in ${GREEN}$(($(($(date +%s%N)-$all_start))/1000000))ms"

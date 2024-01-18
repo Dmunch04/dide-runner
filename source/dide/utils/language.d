@@ -17,6 +17,7 @@ public Language getLanguage(string lang)
         case "js", "javascript": return new Javascript();
         case "ts", "typescript": return new Typescript();
         case "go", "golang": return new Golang();
+        case "rs", "rust": return new Rust();
         default: return null;
     }
 }

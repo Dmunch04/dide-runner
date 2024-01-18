@@ -8,6 +8,7 @@ public import dide.language.csharp;
 public import dide.language.javascript;
 public import dide.language.typescript;
 public import dide.language.golang;
+public import dide.language.rust;
 
 import dide.models : ResultModel, Payload;
 
