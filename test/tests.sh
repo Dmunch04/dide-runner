@@ -73,6 +73,6 @@ printf "${GREEN}"
 echo -e "${LIGHT_GRAY}finished in ${YELLOW}$(($(($(date +%s%N)-$start))/1000000))ms${CLEAR}"
 echo
 
-# zig?, scala?, ?
+# zig?, scala?, ruby?, ?
 
 echo -e "${CLEAR}finished all tests in ${GREEN}$(($(($(date +%s%N)-$all_start))/1000000))ms"
