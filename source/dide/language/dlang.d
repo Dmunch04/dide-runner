@@ -19,7 +19,15 @@ public class Dlang : Language
             args ~= payload.options;
         }
 
-        return runCommand(projectPath, args);
+        if (pOptions.outputSetup)
+        {
+            return runCommands(projectPath, ["dub", "upgrade"], args);
+        }
+        else
+        {
+            runCommand(projectPath, ["dub", "upgrade"]);
+            return runCommand(projectPath, args);
+        }
     }
 
     public void createEnv(string projectPath, Payload payload)

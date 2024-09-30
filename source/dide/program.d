@@ -95,7 +95,7 @@ public class Program
         }
 
         string projectPath = createTempFolder();
-        //scope(exit) rmdirRecurse(projectPath);
+        scope(exit) rmdirRecurse(projectPath);
 
         Language lang = getLanguage(payload.language);
         if (lang is null)
