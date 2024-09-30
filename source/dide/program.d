@@ -35,7 +35,7 @@ public class Program
 
         if (args[0] == "-v" || args[0] == "--version")
         {
-            writeln("Dide Runner v0.1.0b1");
+            writeln("Dide Runner v0.1.0b2");
         }
         else if (args[0] == "-h" || args[0] == "--help")
         {
