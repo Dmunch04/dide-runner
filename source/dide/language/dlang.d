@@ -5,7 +5,7 @@ import std.stdio : File;
 import std.path : buildPath;
 
 import dide.language : Language;
-import dide.command : runCommand;
+import dide.command : runCommand, runCommands;
 import dide.models : ResultModel, Payload, ProgramOptions;
 import dide.utils : writeFiles;
 
