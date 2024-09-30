@@ -26,7 +26,7 @@ public ResultModel runCommand(string projectPath, string[] args)
 
     if (wait(pid) != 0)
     {
-        throw new Exception("could not compile project");
+        //throw new Exception("could not compile project");
     }
 
     outFile.open(projectPath.buildPath(".out"), "r");
